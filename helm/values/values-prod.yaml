@@ -1,0 +1,24 @@
+replicaCount: 5
+
+image:
+  tag: prod
+
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 0
+    maxSurge: 2
+
+resources:
+  limits:
+    cpu: "1000m"
+    memory: "1Gi"
+  requests:
+    cpu: "500m"
+    memory: "512Mi"
+
+hpa:
+  enabled: true
+  minReplicas: 5
+  maxReplicas: 15
+  cpuUtilization: 60

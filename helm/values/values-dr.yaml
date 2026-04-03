@@ -1,0 +1,14 @@
+replicaCount: 3
+
+image:
+  tag: dr
+
+drMode: true
+
+resources:
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+
+hpa:
+  enabled: false

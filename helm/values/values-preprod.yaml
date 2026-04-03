@@ -1,0 +1,3 @@
+# Pre-prod environment overrides
+replicaCount: 3
+env: preprod

@@ -1,0 +1,12 @@
+replicaCount: 1
+
+image:
+  tag: dev
+
+resources:
+  limits:
+    cpu: "300m"
+    memory: "256Mi"
+
+hpa:
+  enabled: false

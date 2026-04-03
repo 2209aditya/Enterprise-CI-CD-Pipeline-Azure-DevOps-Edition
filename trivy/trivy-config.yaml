@@ -1,0 +1,44 @@
+# Trivy main configuration
+
+format: table
+
+# Fail pipeline on HIGH & CRITICAL vulnerabilities
+exit-code: 1
+
+severity:
+  - CRITICAL
+  - HIGH
+
+# Scan types
+scanners:
+  - vuln
+  - secret
+  - config
+
+# Ignore unfixed vulnerabilities (optional – keep false for stricter security)
+ignore-unfixed: false
+
+# Timeout for large images
+timeout: 10m
+
+# Output options
+output: trivy-report.txt
+
+# Enable vulnerability DB updates
+skip-db-update: false
+
+# Cache directory
+cache-dir: .trivycache
+
+# Security checks for misconfigurations
+misconfiguration:
+  scanners:
+    - dockerfile
+    - kubernetes
+
+# Secret scanning
+secret:
+  config: |
+    rules:
+      - id: generic-api-key
+        regex: '(?i)api[_-]?key\s*=\s*[A-Za-z0-9]+'

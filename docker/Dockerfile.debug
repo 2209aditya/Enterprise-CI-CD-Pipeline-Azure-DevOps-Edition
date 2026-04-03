@@ -1,0 +1,39 @@
+# Debug image — NOT FOR PRODUCTION USE
+# ----------- Stage 1: Build -----------
+FROM maven:3.9.9-eclipse-temurin-17 AS builder
+
+WORKDIR /app
+
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# ----------- Stage 2: Debug Runtime -----------
+FROM eclipse-temurin:17-jdk-jammy
+
+WORKDIR /app
+
+# Install debug tools (curl, netcat, ping, etc.)
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    net-tools \
+    iputils-ping \
+    dnsutils \
+    vim \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /app/target/*.jar app.jar
+
+# Create non-root user manually
+RUN useradd -m appuser
+USER appuser
+
+EXPOSE 8080
+
+# Enable remote debugging (optional)
+ENV JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]

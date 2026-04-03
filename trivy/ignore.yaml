@@ -1,0 +1,14 @@
+# CVE Ignore List (Temporary Exceptions Only)
+
+ignore:
+  - id: CVE-2023-12345
+    reason: "False positive in base image, patched in next release"
+    expires: 2026-06-01
+
+  - id: CVE-2024-56789
+    reason: "No exploit path in our application (library not used at runtime)"
+    expires: 2026-05-15
+
+  - id: CVE-2022-99999
+    reason: "Accepted risk, mitigation in place via network policy"
+    expires: 2026-04-30
